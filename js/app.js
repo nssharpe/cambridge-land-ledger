@@ -212,10 +212,10 @@
 
   // ------------------------------------------------------------ map layer controls
   var CAPTIONS = {
-    land: "Land value per square foot of parcel area. Yellow marks the most valuable land. Tax-exempt parcels are shown too, because the City assesses their land.",
-    ratio: "Assessed building value for each dollar of land value. Yellow parcels hold little building on their land: parking, vacant lots, gas stations and older low-rise buildings. Condo buildings use estimated land.",
-    park: "Surface parking lots drawn in OpenStreetMap, clipped to Cambridge parcels. Orange lots sit on taxable parcels; blue lots sit on tax-exempt parcels such as universities. Volunteers draw this map, so some lots may be missing or out of date.",
-    tax: "Change in each parcel's tax bill under the calculator's current settings. Condo buildings show the total for all units. Blue pays less, orange pays more."
+    land: "Land value per square foot of parcel area, with the most valuable land in yellow. Tax-exempt parcels are shown too, since the City still assesses their land.",
+    ratio: "Assessed building value for each dollar of land value. Yellow parcels have very little building on their land, like parking, vacant lots, gas stations and older low-rise buildings. Condo buildings use estimated land.",
+    park: "Surface parking lots drawn in OpenStreetMap, clipped to Cambridge parcels. Orange lots are on taxable parcels and blue lots are on tax-exempt parcels like universities. Volunteers draw this map, so some lots may be missing or out of date.",
+    tax: "Change in each parcel's tax bill with the calculator's current settings. Condo buildings show the total for all their units. Blue pays less, orange pays more."
   };
   function wireMap() {
     document.querySelectorAll('input[name="layer"]').forEach(function (el) {
@@ -235,7 +235,7 @@
     var calcP = getJSON("data/calc.json").then(function (c) { D = LedgerCalc.prepare(c); wireCalc(); renderCalc(); });
     getJSON("data/cities.json").then(cities).catch(function () { /* table stays empty; text above carries the numbers */ });
     Promise.all([getJSON("data/parcels.json"), getJSON("data/parking.json"), calcP]).then(function (res) {
-      if (!window.d3 || !d3.geoMercator) { msg.textContent = "The map library did not load. Check your connection and reload the page."; return; }
+      if (!window.d3 || !d3.geoMercator) { msg.textContent = "The map library didn't load. Check your connection and reload the page."; return; }
       nFeatures = res[0].geom.length;
       map = LedgerMap.init({ canvas: $("map-canvas"), stage: $("map-stage"), tooltip: $("tooltip"), legend: $("map-legend"),
                               parcels: res[0], parking: res[1] });
@@ -245,7 +245,7 @@
       try { ql = new URLSearchParams(location.search).get("layer"); } catch (e) { /* ignore */ }
       if (ql && CAPTIONS[ql]) { var inp = document.querySelector('input[name="layer"][value="' + ql + '"]'); if (inp) { inp.checked = true; inp.dispatchEvent(new Event("change")); } }
     }).catch(function (e) {
-      msg.textContent = "The map data could not load (" + e.message + "). If you opened this file directly, serve the folder over http instead.";
+      msg.textContent = "The map data couldn't load (" + e.message + "). If you opened this file directly, you'll need to serve the folder over http instead.";
     });
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();

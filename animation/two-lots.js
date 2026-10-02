@@ -30,50 +30,50 @@
       {
         "id": 1, "short": "Two lots", "title": "Two lots, same land", "start": 0, "end": 12, "rest": 0, "restReduced": 11.9,
         "captions": [
-          { "start": 0, "end": 6, "text": "Two lots side by side on a Cambridge main street, in a corridor zoned for 6 stories." },
-          { "start": 6, "end": 12, "text": "Same size, same land value. One is a surface parking lot. The other has 5 stories of shops and offices." }
+          { "start": 0, "end": 6, "text": "Picture two lots side by side on a Cambridge main street, zoned for up to 6 stories." },
+          { "start": 6, "end": 12, "text": "They're the same size with the same land value. One is a surface parking lot, and the other has 5 stories of shops and offices." }
         ],
-        "note": "Illustrative. Two 10,000 sq ft lots, land valued at $120 per sq ft (the FY26 median for Cambridge retail parcels)."
+        "note": "Illustrative example with two 10,000 sq ft lots, land valued at $120 per sq ft (the FY26 median for Cambridge retail parcels)."
       },
       {
         "id": 2, "short": "Today's tax", "title": "Today's tax", "start": 12, "end": 25, "rest": 15, "restReduced": 24.9,
         "captions": [
-          { "start": 12, "end": 18.5, "text": "Today the parking lot pays about $17,200 a year. The building next door pays about $112,400." },
-          { "start": 18.5, "end": 25, "text": "Most of that is for the building. Today's tax charges a lot for building, and little for holding land." }
+          { "start": 12, "end": 18.5, "text": "Right now the parking lot pays about $17,200 a year, and the building next door pays about $112,400." },
+          { "start": 18.5, "end": 25, "text": "Most of that is for the building. The way it works today, you pay a lot for putting up a building and very little for just holding land." }
         ],
-        "note": "Illustrative. Both lots taxed at the FY26 Cambridge commercial rate, $14.07 per $1,000."
+        "note": "Illustrative example, with both lots taxed at the FY26 Cambridge commercial rate of $14.07 per $1,000."
       },
       {
         "id": 3, "short": "Shift toward land", "title": "Shift toward land", "start": 25, "end": 42, "rest": 25, "restReduced": 41.9,
         "captions": [
-          { "start": 25, "end": 31, "text": "Now shift the tax toward land. Exempt part of every building's value, and raise the rate so revenue stays the same." },
-          { "start": 31, "end": 37, "text": "With half of building value exempt, the parking lot pays about $27,000 and the building about $102,600." },
-          { "start": 37, "end": 42, "text": "Land only: both lots pay about $64,800. Same land, same tax. The commercial class still raises $417 million." }
+          { "start": 25, "end": 31, "text": "Now let's shift the tax toward land by exempting part of every building's value, and raise the rate so revenue stays the same." },
+          { "start": 31, "end": 37, "text": "If half of building value is exempt, the parking lot pays about $27,000 and the building about $102,600." },
+          { "start": 37, "end": 42, "text": "If you only tax land, both lots pay about $64,800, and the commercial class still raises $417 million." }
         ],
-        "note": "Rates from the Cambridge FY26 model, per $1,000: today $14.07; half exempt, land $22.32 and buildings $11.16; land only, $53.98. The commercial class raises $417 million in every case."
+        "note": "Rates per $1,000 from the Cambridge FY26 model are $14.07 today, $22.32 for land and $11.16 for buildings with half exempt, and $53.98 for land only. The commercial class raises $417 million in every case."
       },
       {
-        "id": 4, "short": "Inside each class", "title": "But in Cambridge, the shift stays inside each class", "start": 42, "end": 60, "rest": 45.5, "restReduced": 59.9,
+        "id": 4, "short": "Inside each class", "title": "In Cambridge, the shift stays inside each class", "start": 42, "end": 60, "rest": 45.5, "restReduced": 59.9,
         "captions": [
-          { "start": 42, "end": 47, "text": "Massachusetts taxes homes and businesses as separate classes. Any shift stays inside each class." },
-          { "start": 47, "end": 54, "text": "A house on a big lot pays about 9.5% more. A condo in a 6-unit building on a similar lot pays about 9.3% less." },
+          { "start": 42, "end": 47, "text": "Massachusetts taxes homes and businesses as separate classes, so any shift stays inside each class." },
+          { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 9.5% more, and a condo in a 6-unit building on a similar lot pays about 9.3% less." },
           { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax from houses to condos." }
         ],
-        "note": "Illustrative, before the residential exemption. FY26 residential rate $6.67 per $1,000; at 2:1, land $9.78 and buildings $4.89. Cambridge medians at 2:1: owner-occupied single-family +9.5%, condos -9.3%."
+        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.78 for land and $4.89 for buildings. Cambridge medians at 2:1 are +9.5% for owner-occupied single-family homes and -9.3% for condos."
       },
       {
         "id": 5, "short": "What to do first", "title": "What to do first", "start": 60, "end": 73, "rest": 64.6, "restReduced": 67.9,
         "captions": [
-          { "start": 60, "end": 64.5, "text": "First: accurate, fair land values, starting with parking, commercial and condo land." },
-          { "start": 64.5, "end": 68, "text": "Then: a state option for cities that want it." },
+          { "start": 60, "end": 64.5, "text": "The first step is getting land values right, starting with parking, commercial and condo land." },
+          { "start": 64.5, "end": 68, "text": "After that, a state option for cities that want it." },
           { "start": 68, "end": 73, "text": "Cambridge Land Ledger. Built by a Cambridge resident who lives in a condo." }
         ],
-        "note": "Sources: Cambridge FY26 assessor data and tax rates, run through the Cambridge Land Ledger model."
+        "note": "Based on Cambridge FY26 assessor data and tax rates, run through the Cambridge Land Ledger model."
       }
     ],
     "steps": [
-      { "title": "Accurate, fair land values", "text": "Ask Assessing to review parking and commercial land against comparable land, and to give condo units their share of land." },
-      { "title": "A state option", "text": "Let cities that want a land-weighted tax choose one. Cambridge residents can support it without Cambridge going first." }
+      { "title": "Get land values right", "text": "Ask Assessing to review parking and commercial land against comparable land, and to give condo units their share of the land." },
+      { "title": "A state option", "text": "Let cities that want a land-weighted tax opt in. Cambridge residents can support that without Cambridge having to go first." }
     ],
     "geom": {
       "building": { "x": 345, "y": 125, "w": 205, "h": 165, "dx": 24, "dy": 80, "floors": 5 },

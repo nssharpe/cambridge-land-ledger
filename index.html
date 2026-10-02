@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cambridge Land Ledger</title>
-<meta name="description" content="Where Cambridge's land value sits, how it is assessed, and what a land/building tax change would do to tax bills here. FY2026 assessor data.">
+<meta name="description" content="A map of Cambridge's land value from FY2026 assessor data, plus a calculator for what a building exemption would do to tax bills here.">
 <meta name="color-scheme" content="light dark">
 <script src="js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -36,9 +36,9 @@
   <div class="wrap">
     <p class="kicker">Cambridge, Massachusetts &middot; FY2026 assessments</p>
     <h1 id="h-hero">Who holds Cambridge's land value?</h1>
-    <p class="lede">The City assesses every parcel's land and its buildings separately. Cambridge's land is worth about <strong class="num">$31.6 billion</strong>, and about $805 million of it sits under surface parking on taxable parcels. This site maps that land, asks whether it is valued accurately, and tests what a land-weighted property tax would do to tax bills here.</p>
+    <p class="lede">The City assesses every parcel's land and buildings separately, and all together Cambridge's land is worth about <strong class="num">$31.6 billion</strong>. About $805 million of that is land under surface parking on taxable parcels. I built this site to map that land and see what a land-weighted property tax would actually do to tax bills here (and along the way, to ask whether the land is being valued accurately).</p>
     <div class="disclosure" role="note">
-      <p><strong>Disclosure.</strong> Built by Nate Sharpe, a Cambridge resident who lives in a condo building. Condos would pay less under the scenarios shown.</p>
+      <p><strong>Full disclosure,</strong> I'm Nate Sharpe, I built this site, and I live in a condo here in Cambridge. Condos would pay less under the scenarios shown.</p>
     </div>
 
     <dl class="figs">
@@ -66,7 +66,7 @@
         </tbody>
       </table>
     </div>
-    <p class="caption">Assessor land values, FY2026. Condo units carry no land value in the City's open data, so condo land is estimated from comparable parcels (see <a href="methods.html#condo-land">methods</a>). Parking acreage comes from OpenStreetMap.</p>
+    <p class="caption">These are the Assessor's FY2026 land values. Condo units don't carry any land value in the City's open data, so I estimated condo land from comparable parcels (see <a href="methods.html#condo-land">methods</a>). Parking acreage is from OpenStreetMap.</p>
   </div>
 </section>
 
@@ -74,7 +74,7 @@
   <div class="wrap">
     <p class="sec-num">01 &middot; The plat</p>
     <h2 id="h-map">Every parcel, by what its land is worth</h2>
-    <p>Each shape is a tax parcel. Condo units are combined into their building. Hover or tap a parcel for its numbers. Switch layers to see how much building sits on each dollar of land, where the surface parking is, and how bills would change under the calculator's current settings.</p>
+    <p>Each shape is a tax parcel, with condo units combined into their building. Hover over or tap a parcel to see its numbers. You can switch layers to see how much building sits on each dollar of land, where the surface parking is, or how bills would change with whatever the calculator is set to.</p>
 
     <div class="map-card">
       <div class="map-tools">
@@ -100,7 +100,7 @@
         <div class="attrib">Parcels: City of Cambridge GIS. Parking: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a> (ODbL). Drag to pan; Ctrl or &#8984; + scroll to zoom.</div>
       </div>
     </div>
-    <p class="caption" id="map-caption">Land value per square foot of parcel area. Yellow marks the most valuable land. Tax-exempt parcels are shown too, because the City assesses their land.</p>
+    <p class="caption" id="map-caption">Land value per square foot of parcel area, with the most valuable land in yellow. Tax-exempt parcels are shown too, since the City still assesses their land.</p>
     <div class="tooltip" id="tooltip" hidden role="status"></div>
   </div>
 </section>
@@ -109,12 +109,12 @@
   <div class="wrap">
     <p class="sec-num">02 &middot; How it works</p>
     <h2 id="h-two">Two lots, two tax rules</h2>
-    <p>Today one rate applies to land and buildings alike. A building exemption lowers the tax on buildings and raises the rate on everything that remains taxable, which is mostly land. The class still raises the same total.</p>
+    <p>Right now one rate applies to land and buildings alike. A building exemption lowers the tax on buildings, so the rate has to go up on everything that's still taxable (which is mostly land), and each class still raises the same total.</p>
     <div id="two-lots-animation">
       <div class="anim-fallback">
         <h3>Two lots on the same street</h3>
-        <p>Picture two 10,000 sq ft commercial lots, each with $1.2 million of land. One holds a surface parking lot. The other holds a $6.8 million building. Today the building lot pays about 6.5 times as much tax. Exempt half of every building's value and the commercial rate rises to keep the class total unchanged: the parking lot's bill goes up by more than half, and the building lot's bill goes down.</p>
-        <p>The same arithmetic runs through homes. A parcel pays more when its land share of value is above its class average. In Cambridge, single-family houses sit on a lot of land per dollar of building, and condo buildings on little, so houses pay more and condos pay less.</p>
+        <p>Picture two 10,000 sq ft commercial lots on the same street, each with $1.2 million of land. One is a surface parking lot and the other has a $6.8 million building on it. Today the building lot pays about 6.5 times as much tax. If you exempt half of every building's value, the commercial rate goes up to keep the class total the same, so the parking lot's bill goes up by more than half and the building lot's bill goes down.</p>
+        <p>The same math applies to homes. A parcel pays more when land is a bigger share of its value than the average for its class. In Cambridge, single-family houses have a lot of land per dollar of building and condo buildings have very little, so houses pay more and condos pay less.</p>
       </div>
     </div>
   </div>
@@ -124,8 +124,8 @@
   <div class="wrap">
     <p class="sec-num">03 &middot; Calculator</p>
     <h2 id="h-calc">What would change?</h2>
-    <p>Pick how much of every building's value to exempt. Each tax class still raises exactly its FY2026 total, so the rate rises as the building exemption grows. Owner-occupants keep the residential exemption, recalculated on the new values; that keeps each owner-occupant's saving near today's $3,400. Every one of the 25,400 taxable properties is recomputed in your browser.</p>
-    <p><strong>At a 50% building exemption, the median owner-occupied single-family home pays <span class="more num">9.5% more</span> (about $741 a year), and the median condo pays <span class="less num">9.3% less</span>.</strong> A land value tax in Cambridge would shift tax from houses to condos. It would not cut the typical homeowner's bill.</p>
+    <p>Pick how much of every building's value to exempt. Each tax class still raises exactly what it raised in FY2026, so the rate goes up as the building exemption grows. Owner-occupants keep the residential exemption, recalculated on the new values, which keeps each owner-occupant's savings close to today's $3,400. All 25,400 taxable properties get recomputed right in your browser.</p>
+    <p><strong>At a 50% building exemption, the median owner-occupied single-family home pays <span class="more num">9.5% more</span> (about $741 a year), and the median condo pays <span class="less num">9.3% less</span>.</strong> So in Cambridge, a land value tax would mostly shift tax from houses to condos, and it wouldn't cut the typical homeowner's bill.</p>
 
     <div class="calc">
       <form class="calc-controls" id="calc-form" onsubmit="return false">
@@ -153,8 +153,8 @@
       </form>
 
       <div>
-        <div class="note" id="note-35" hidden><p><strong>About the 35% option.</strong> A larger residential exemption gives every owner-occupant a bigger deduction. Rental and investor property pays for it. Any homeowner gain in this setting comes from the bigger exemption. The land/building change on its own still moves tax from owner-occupied houses toward condos.</p></div>
-        <div class="note" id="note-both"><p><strong>Commercial property included.</strong> Labs, with costly buildings on their land, pay less. Small retail stores, restaurants and parking lots pay more. That is why the plan recommends residential-only coverage if Cambridge ever opts in.</p></div>
+        <div class="note" id="note-35" hidden><p><strong>About the 35% option.</strong> A bigger residential exemption gives every owner-occupant a bigger deduction, and rental and investor property pays for it. So any homeowner gain in this setting comes from the bigger exemption. The land/building change by itself still moves tax from owner-occupied houses toward condos.</p></div>
+        <div class="note" id="note-both"><p><strong>Commercial property included.</strong> Labs, which have expensive buildings on their land, pay less. Small shops, restaurants and parking lots pay more. That's why I'd recommend residential-only coverage if Cambridge ever opts in.</p></div>
         <div class="table-scroll" tabindex="0" role="region" aria-labelledby="calc-cap">
           <table class="ledger" id="calc-table">
             <caption id="calc-cap">Median change in annual tax bill, FY2026 values</caption>
@@ -164,11 +164,11 @@
         </div>
         <figure class="chart" id="calc-chart" style="margin:0">
           <div id="calc-chart-svg"></div>
-          <figcaption>Median % change in each group's tax bill under the settings above. Blue pays less, orange pays more.</figcaption>
+          <figcaption>Median % change in each group's tax bill with the settings above. Blue pays less, orange pays more.</figcaption>
         </figure>
       </div>
     </div>
-    <p class="caption">Groups: "owner-occupied" means the property has the residential exemption in the City's open data, which misses about 900 owner-occupants. Two- and three-family and condo rows include owner-occupied and rental properties. Parking lots and vacant land include both classes. Condo land is estimated. Values are held at FY2026 levels; a real reform would phase in over several years.</p>
+    <p class="caption">A few notes on the groups. "Owner-occupied" means the property has the residential exemption in the City's open data, which misses about 900 owner-occupants. The two- and three-family and condo rows include both owner-occupied and rental properties, and parking lots and vacant land include both classes. Condo land is estimated. Values are held at FY2026 levels, and a real reform would phase in over several years.</p>
   </div>
 </section>
 
@@ -176,8 +176,8 @@
   <div class="wrap">
     <p class="sec-num">04 &middot; Elsewhere in Massachusetts</p>
     <h2 id="h-cities">Other Massachusetts cities</h2>
-    <p>We ran the same 50% building exemption on Worcester, Springfield, Fitchburg and Leominster using state parcel data. Vacant and parking land pays 57% to 72% more in every city. Two- and three-family homes, condos and apartments pay less. The median single-family home pays 0% to 3.3% more, about $0 to $170 a year. No Massachusetts city we tested shows the median single-family homeowner paying less.</p>
-    <p>The reason is structural. In Massachusetts cities, single-family homes carry the highest land share of value in the residential class, and vacant and parking land is too small a share of the tax base to fund a homeowner cut.</p>
+    <p>I ran the same 50% building exemption on Worcester, Springfield, Fitchburg and Leominster using state parcel data. In every city, vacant and parking land pays 57% to 72% more, and two- and three-family homes, condos and apartments pay less. The median single-family home pays 0% to 3.3% more (about $0 to $170 a year). I didn't find a Massachusetts city where the median single-family homeowner pays less.</p>
+    <p>That's because in Massachusetts cities, single-family homes have the highest land share of value in the residential class, and vacant and parking land is too small a share of the tax base to pay for a cut for homeowners.</p>
     <div class="multiples" id="multiples" aria-hidden="true"></div>
     <div class="table-scroll" tabindex="0" role="region" aria-labelledby="cities-cap">
       <table class="ledger" id="cities-table">
@@ -185,7 +185,7 @@
         <thead></thead><tbody></tbody>
       </table>
     </div>
-    <p class="caption">Cambridge uses the residential exemption roll for owner-occupancy; the other cities use a mailing-address match. Condo land is estimated everywhere. Residential exemptions are assumed to be zero outside Cambridge (not verified for Worcester or Springfield). "Pooled" rows tax all classes at one rate, an option only for single-rate towns.</p>
+    <p class="caption">For Cambridge I used the residential exemption roll to find owner-occupants, and for the other cities a mailing-address match. Condo land is estimated everywhere. I assumed residential exemptions are zero outside Cambridge (I haven't verified that for Worcester or Springfield). The "pooled" rows tax all classes at one rate, which is only an option for single-rate towns.</p>
   </div>
 </section>
 
@@ -193,15 +193,15 @@
   <div class="wrap">
     <p class="sec-num">05 &middot; Track A</p>
     <h2 id="h-assess">Questions for the Assessing Department</h2>
-    <p>Accurate land values need no new law, and they matter more under any land-weighted tax. These are questions. Each points to a pattern in public data that Assessing may well be able to explain. Dollar effects should wait for the Department's answers and confirmation from the state Division of Local Services.</p>
+    <p>Getting land values right doesn't take a new law, and it matters even more under any land-weighted tax. I'm asking these as questions, since each one points to a pattern in public data that Assessing may well be able to explain. I'd hold off on dollar effects until the Department answers and the state Division of Local Services confirms the math.</p>
     <ol class="asks">
-      <li><strong>Commercial and residential land schedules.</strong> Comparing parcels of the same size in the same tax district and zoning, commercial and industrial land is assessed about 37% lower per square foot than residential land (95% interval: 29% to 43% lower). What explains the difference, and which land schedules apply to each class? <span class="tag solid">Consistent across tests</span></li>
-      <li><strong>Parking and vacant land.</strong> Land classed as parking lots is assessed 27% to 50% below other commercial land of the same size nearby, depending on how the comparison is set up; the intervals run from 10% to 70% below. Would Assessing review parking and vacant parcels against comparable land? <span class="tag">Fragile result</span></li>
-      <li><strong>Surface parking on other parcels.</strong> OpenStreetMap shows 122 acres of surface parking on taxable parcels, and only 13 of those acres are on parcels classed as parking lots. Shopping centers, offices and labs hold most of it. How does the land schedule treat large surface lots attached to other uses? <span class="tag">Map data, volunteer-drawn</span></li>
-      <li><strong>Condo land.</strong> Condo units show $0 land value in the open data. Would Assessing publish each unit's land value, allocated by percentage interest? In small condo buildings our estimate of land share is about a quarter below comparable two- and three-family houses, so it is probably low. <span class="tag solid">Data gap</span></li>
+      <li><strong>Commercial and residential land schedules.</strong> When I compare parcels of the same size, tax district and zoning, commercial and industrial land is assessed about 37% lower per square foot than residential land (95% interval 29% to 43% lower). What explains the difference, and which land schedules apply to each class? <span class="tag solid">Consistent across tests</span></li>
+      <li><strong>Parking and vacant land.</strong> Land classed as parking lots is assessed 27% to 50% below other commercial land of the same size nearby, depending on how I set up the comparison (the intervals run from 10% to 70% below). Would Assessing review parking and vacant parcels against comparable land? <span class="tag">Fragile result</span></li>
+      <li><strong>Surface parking on other parcels.</strong> OpenStreetMap shows 122 acres of surface parking on taxable parcels, and only 13 of those acres are on parcels classed as parking lots. Most of it belongs to shopping centers, offices and labs. How does the land schedule treat big surface lots attached to other uses? <span class="tag">Map data, volunteer-drawn</span></li>
+      <li><strong>Condo land.</strong> Condo units show $0 land value in the open data. Could Assessing publish each unit's land value, allocated by percentage interest? In small condo buildings my estimate of land share comes out about a quarter below comparable two- and three-family houses, so it's probably low. <span class="tag solid">Data gap</span></li>
     </ol>
     <h3>Why the answers matter to residents</h3>
-    <p>Under FY2026 rules, correcting commercial land values would move tax within the commercial class only. The City projects that from FY2028 commercial property will pay the legal maximum: 175% of its share of total value. If so, a real gap in commercial land values would matter to residents: correcting the full gap could lower the residential levy by up to about $38 million a year. Fixing parking lots alone would move less than $1 million. <span class="tag">Upper bound, pending state confirmation</span></p>
+    <p>Under FY2026 rules, correcting commercial land values would only move tax around within the commercial class. But the City projects that starting in FY2028, commercial property will pay the legal maximum (175% of its share of total value). If that happens, a real gap in commercial land values would matter to residents, since correcting the full gap could lower the residential levy by up to about $38 million a year. Fixing parking lots alone would move less than $1 million. <span class="tag">Upper bound, pending state confirmation</span></p>
   </div>
 </section>
 
@@ -212,15 +212,15 @@
     <div class="grid-2">
       <div>
         <h3>The legal limits</h3>
-        <p>Cambridge cannot adopt a land value tax by itself. The state constitution lets the Legislature tax property by use class, and requires equal treatment inside each class:</p>
+        <p>Cambridge can't adopt a land value tax on its own. The state constitution lets the Legislature tax property by use class, but it requires equal treatment inside each class:</p>
         <blockquote>&ldquo;&hellip;the general court may classify real property according to its use in no more than four classes and to assess, rate and tax such property differently in the classes so established, but proportionately in the same class, and except that reasonable exemptions may be granted.&rdquo;<cite>Mass. Const. Amend. Art. 112</cite></blockquote>
         <p>The Home Rule Amendment keeps the taxing power with the state:</p>
         <blockquote>&ldquo;Nothing in this article shall be deemed to grant to any city or town the power to &hellip; levy, assess and collect taxes&rdquo;<cite>Mass. Const. Amend. Art. 89, &sect;7</cite></blockquote>
-        <p>All four use classes are already in use, so land and buildings cannot become separate classes. The only opening is the &ldquo;reasonable exemptions&rdquo; clause: a law that exempts part of every building's value. No court has tested that. Our informed guess is a 25% to 40% chance it would survive review by the Supreme Judicial Court. That estimate is a judgment call. It is not legal advice.</p>
+        <p>All four use classes are already taken, so land and buildings can't become separate classes. That leaves the &ldquo;reasonable exemptions&rdquo; clause, meaning a law that exempts part of every building's value. No court has tested that, and my best guess is a 25% to 40% chance it would survive review by the Supreme Judicial Court, but I'm not a lawyer.</p>
       </div>
       <div>
         <h3>Two asks for the Legislature</h3>
-        <p><strong>1. Expand the Urban Center Housing TIF (c.40 &sect;60).</strong> Cities can already exempt the added value of new housing for up to 20 years, inside approved commercial-center zones, one project at a time, if at least 15% of the units are affordable at 80% of area median income (or 25% at 110%). A bill could let cities offer standard, by-right exemptions for new housing across more of the city. It rests on an existing statute, so it has the firmest legal footing. Exemptions tied to construction dates carry their own fairness risk, so the bill should stay close to the TIF structure.</p>
+        <p><strong>1. Expand the Urban Center Housing TIF (c.40 &sect;60).</strong> Cities can already exempt the added value of new housing for up to 20 years, but only inside approved commercial-center zones, one project at a time, and only if at least 15% of the units are affordable at 80% of area median income (or 25% at 110%). A bill could let cities offer standard, by-right exemptions for new housing across more of the city. Since it builds on an existing statute, it's on the firmest legal footing. Exemptions tied to construction dates have their own fairness problems, though, so I'd keep the bill close to the TIF structure.</p>
         <p><strong>2. A local-option building exemption.</strong> Any city could choose to exempt a share of building value, with these safeguards:</p>
         <ul>
           <li>the city chooses which classes it covers;</li>
@@ -229,7 +229,7 @@
           <li>single-rate towns may pool all classes;</li>
           <li>a phase-in and a hardship deferral.</li>
         </ul>
-        <p>Its case is density and fairness: idle land pays more, while triple-deckers, condos and apartments pay less. In Cambridge it would raise the typical single-family bill, so we do not propose that Cambridge adopt it now.</p>
+        <p>The case for it is density and fairness, since idle land pays more and triple-deckers, condos and apartments pay less. In Cambridge it would raise the typical single-family bill, though, so I'm not proposing that Cambridge adopt it now.</p>
       </div>
     </div>
   </div>
@@ -238,8 +238,8 @@
 
 <footer>
   <div class="wrap">
-    <p><strong style="color:var(--ink)">Built by Nate Sharpe, a Cambridge resident who lives in a condo building. Condos would pay less under the scenarios shown.</strong></p>
-    <p>Data: City of Cambridge FY2026 property database and parcel map; OpenStreetMap; MassGIS Level 3 parcels. Model and caveats: <a href="methods.html">methods</a>. Independent work; not affiliated with the City of Cambridge.</p>
+    <p><strong style="color:var(--ink)">Built by Nate Sharpe in Cambridge.</strong></p>
+    <p>Data is from the City of Cambridge FY2026 property database and parcel map, OpenStreetMap, and MassGIS Level 3 parcels. The model and caveats are on the <a href="methods.html">methods</a> page. This is independent work and isn't affiliated with the City of Cambridge.</p>
   </div>
 </footer>
 

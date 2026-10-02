@@ -178,9 +178,9 @@
         rows.push(["FY2026 tax", money(a)]);
         var pct = a > 0 ? (b - a) / a * 100 : 0;
         rows.push([scenLabel, money(b) + (a > 0 ? " (" + (pct >= 0 ? "+" : "−") + Math.abs(pct).toFixed(1) + "%)" : "")]);
-        if (P.est[f]) note = "Condo land is estimated; the City publishes none.";
+        if (P.est[f]) note = "Condo land is estimated, since the City doesn't publish it.";
       } else if (st === 2) {
-        note = "Pays no property tax. The City still assesses its land.";
+        note = "Pays no property tax, but the City still assesses its land.";
       }
       return '<span class="t-h">' + esc(name) + "</span><dl>" +
         rows.map(function (r) { return "<dt>" + esc(r[0]) + "</dt><dd>" + esc(r[1]) + "</dd>"; }).join("") + "</dl>" +
