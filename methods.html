@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Methods | Cambridge Land Ledger</title>
+<meta name="description" content="Data sources, model, scenarios, checks and caveats behind the Cambridge Land Ledger.">
+<meta name="color-scheme" content="light dark">
+<script src="js/theme.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,400..800&amp;family=Spectral:wght@400;500&amp;display=swap">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="masthead">
+  <div class="wrap">
+    <a class="brand" href="index.html">Cambridge Land Ledger</a>
+    <nav class="nav" aria-label="Site">
+      <a href="index.html#map">Map</a>
+      <a href="index.html#calculator">Calculator</a>
+      <a href="index.html#cities">Other cities</a>
+      <a href="index.html#assessing">Questions</a>
+      <a href="index.html#state-law">State law</a>
+      <a href="methods.html" aria-current="page">Methods</a>
+    </nav>
+    <button type="button" class="btn theme-toggle" id="theme-toggle" aria-label="Color theme: automatic. Change theme">Theme: auto</button>
+  </div>
+</header>
+
+<main id="main" class="wrap prose">
+  <section aria-labelledby="h-m">
+    <p class="kicker">Methods</p>
+    <h1 id="h-m">How the numbers were made</h1>
+    <div class="disclosure" role="note">
+      <p><strong>Disclosure.</strong> Built by Nate Sharpe, a Cambridge resident who lives in a condo building. Condos would pay less under the scenarios shown.</p>
+    </div>
+    <p>Everything on the site comes from public data and one reproducible model. The site shows no owner names, addresses or unit numbers.</p>
+
+    <h2 id="sources">Data sources</h2>
+    <ul>
+      <li><strong>Assessments:</strong> City of Cambridge, <a href="https://data.cambridgema.gov/Assessing/Cambridge-Property-Database-FY2026/waa7-ibdu">Property Database FY2026</a> (30,156 rows; 28,850 properties after removing repeated rows for multi-building parcels). Land value, building value, use code, tax class and residential exemption flag per property.</li>
+      <li><strong>Parcel shapes:</strong> City of Cambridge GIS, <a href="https://gis.data.mass.gov/datasets/CambridgeGIS::fy2026-parcels">FY2026 parcels</a> (also in the <a href="https://github.com/cambridgegis/cambridgegis_data">cambridgegis_data</a> repository). Joined to assessments by map-lot.</li>
+      <li><strong>Surface parking:</strong> <a href="https://www.openstreetmap.org/copyright">&copy; OpenStreetMap contributors</a>, ODbL, queried through the Overpass API on 2026-09-30 (<code>amenity=parking</code>).</li>
+      <li><strong>Other cities:</strong> <a href="https://www.mass.gov/info-details/massgis-data-property-tax-parcels">MassGIS Level 3 parcels</a> with assessor tables for Worcester, Springfield, Fitchburg and Leominster; tax rates from the state Division of Local Services.</li>
+      <li><strong>Official FY2026 parameters:</strong> residential rate $6.67 and commercial/industrial rate $14.07 per $1,000; residential exemption $510,208; residential share of the levy 33.8010%.</li>
+    </ul>
+
+    <h2 id="method">Method</h2>
+    <p>For each scenario the model exempts a fraction <em>f</em> of every building's assessed value. Taxable value becomes land plus (1 &minus; <em>f</em>) times building. A 50% exemption is the same as taxing land at twice the building rate (2:1); 75% is 4:1; 100% taxes land only.</p>
+    <ul>
+      <li><strong>Revenue neutral within each class.</strong> The residential class and the commercial/industrial class each raise exactly the amount they raise in FY2026, so the rate in each class is re-solved. Classification shares do not change.</li>
+      <li><strong>Residential exemption, treatment (c).</strong> The exemption stays at 30% of the average residential taxable value, recomputed on post-exemption values: $510,208 times mean post-exemption value over mean assessed value ($347,848 at 50%). That keeps each owner-occupant's dollar saving near today's $3,403. The 35% option scales this by 35/30.</li>
+      <li><strong>Coverage.</strong> "Residential only" re-solves the residential class and leaves commercial bills unchanged. Because each class is solved separately, residential results are identical under both coverage options.</li>
+      <li><strong>Medians.</strong> Percentage medians use properties with a FY2026 bill above $0. "Paying more" means an increase above $0.50.</li>
+      <li><strong>Map.</strong> Parcels are dissolved by map-lot, simplified by 0.75 m and rounded to 5 decimal places. Condo units are summed to their building. Land $/sq ft divides assessed land by the parcel's GIS area.</li>
+    </ul>
+
+    <h2 id="scenarios">Scenarios</h2>
+    <div class="table-scroll" tabindex="0" role="region" aria-labelledby="scen-cap">
+      <table class="ledger">
+        <caption id="scen-cap">Rates per $1,000 under treatment (c), FY2026 values</caption>
+        <thead><tr><th scope="col">Scenario</th><th scope="col">Building exemption</th><th scope="col">Land:building</th><th scope="col">Residential land / building</th><th scope="col">Commercial land / building</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Today</th><td>0%</td><td>1:1</td><td>6.67 / 6.67</td><td>14.07 / 14.07</td></tr>
+          <tr><th scope="row">S1</th><td>50%</td><td>2:1</td><td>9.781 / 4.891</td><td>22.322 / 11.161</td></tr>
+          <tr><th scope="row">S2</th><td>75%</td><td>4:1</td><td>12.743 / 3.186</td><td>31.583 / 7.896</td></tr>
+          <tr><th scope="row">S3</th><td>100%</td><td>land only</td><td>18.163 / 0</td><td>53.979 / 0</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="checks">Checks</h2>
+    <ul>
+      <li>Modeled class values match official FY2026 figures within 0.9%, and class levies within 1.7%.</li>
+      <li>The in-browser calculator reruns the model's formula on all 25,400 taxable properties. Run against the model's own output, it matches every property's S1 and S3 bill within 3 cents, keeps each class levy neutral within $1, and reproduces every published S1 group median within 0.1 point. With no building exemption at 30% it reproduces FY2026 bills exactly.</li>
+      <li>OpenStreetMap parking on parcels totals 122 acres on taxable land and 45 acres on tax-exempt land, matching the analysis report.</li>
+    </ul>
+
+    <h2 id="caveats">Caveats</h2>
+    <ul>
+      <li id="condo-land"><strong>Condo land is estimated.</strong> Condo units carry $0 land value in the open data. We estimate each building's land from the median land price per square foot of comparable parcels in the same tax district and zoning, times the lot area, shared among units by assessed value and capped at 90% of a unit's value. In 2- and 3-unit condo buildings the estimate gives a land share about 24% below comparable two- and three-family houses, so it is probably low. Raising all condo land by the full gap (&times;1.315) changes no group's direction, but moves the residential median at 50% from &minus;2.4% to +0.8%.</li>
+      <li><strong>Owner-occupancy is undercounted.</strong> The open-data exemption flag covers about 900 fewer owner-occupants (6.7%) than the official count. Those owners are treated as rental property here.</li>
+      <li><strong>The parking-land result is fragile.</strong> A regression of land $/sq ft on lot size with tax district &times; zoning fixed effects puts parking-lot land 50% below other commercial land (95% interval 17% to 70% below). Dropping cells with missing zoning shrinks the gap to 27% (10% to 41%). The model cannot see frontage, shape, easements or leases. Treat a gap as a question for review.</li>
+      <li><strong>Other-city assumptions.</strong> Owner-occupancy outside Cambridge is a mailing-address match. Residential exemptions are assumed to be zero, which is unverified for Worcester and Springfield. Condo land is imputed in every city. Personal property is held fixed.</li>
+      <li><strong>Static values.</strong> The model holds FY2026 values fixed. Real reforms change behavior and assessments over time, and would phase in.</li>
+      <li><strong>State rules.</strong> The FY2028 effects of correcting commercial land depend on the 175% commercial cap binding as the City projects. The state Division of Local Services should confirm the computation before anyone quotes dollar figures.</li>
+      <li><strong>Legal odds.</strong> The 25% to 40% estimate for a building exemption surviving court review is our informed guess. It is not legal advice.</li>
+    </ul>
+
+    <h2 id="code">Code</h2>
+    <ul>
+      <li><code>analysis/model.py</code>: cleaning, condo land estimate, scenarios, checks and the full report.</li>
+      <li><code>analysis/parking_osm.py</code>: OpenStreetMap parking joined to parcels.</li>
+      <li><code>analysis/cities_model.py</code>: the four-city comparison.</li>
+      <li><code>site/build_data.py</code>: builds this site's data files; <code>site/tests/validate_calc.js</code> checks the calculator against the model.</li>
+    </ul>
+    <p>This site's source is at <a href="https://github.com/nssharpe/cambridge-land-ledger">github.com/nssharpe/cambridge-land-ledger</a>. The analysis code is available on request.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Independent work; not affiliated with the City of Cambridge. Parcel data: City of Cambridge GIS. Parking: &copy; OpenStreetMap contributors.</p>
+  </div>
+</footer>
+</body>
+</html>

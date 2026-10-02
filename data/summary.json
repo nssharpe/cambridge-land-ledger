@@ -1,0 +1,60 @@
+{
+ "land_all": 31580654774.03837,
+ "bldg_all": 61792343596.96163,
+ "land_taxable": 22716447581.712425,
+ "bldg_taxable": 48158476813.28757,
+ "land_exempt": 8864207192.325943,
+ "land_share_taxable": 0.32051459349867045,
+ "levy_R": 233199407.66645,
+ "levy_CIP": 417108910.77030003,
+ "n_taxable": 25400,
+ "n_map_features": 12866,
+ "parking_acres": {
+  "taxable": 122.1,
+  "exempt": 44.8
+ },
+ "median_land_psf_taxable_parcels": 238.7,
+ "land_sqft_total": 151305614.7213909,
+ "land_by_category": [
+  {
+   "category": "One- to three-family homes",
+   "land": 7126699895.0,
+   "share": 0.22566662870013304
+  },
+  {
+   "category": "Labs and offices",
+   "land": 5597377524.790839,
+   "share": 0.1772407052621435
+  },
+  {
+   "category": "Universities (tax-exempt)",
+   "land": 5142351637.56858,
+   "share": 0.16283233119650112
+  },
+  {
+   "category": "Condos",
+   "land": 4212878832.9708953,
+   "share": 0.13340061702692096
+  },
+  {
+   "category": "Government, parks and other tax-exempt",
+   "land": 3721855554.757364,
+   "share": 0.11785238720943189
+  },
+  {
+   "category": "Apartment buildings and other residential",
+   "land": 3431305857.974155,
+   "share": 0.10865214424860316
+  },
+  {
+   "category": "Shops, hotels, industry and other commercial",
+   "land": 1731290570.9765353,
+   "share": 0.054821237348118064
+  },
+  {
+   "category": "Parking lots and vacant land",
+   "land": 616894900.0,
+   "share": 0.01953394900814828
+  }
+ ]
+}

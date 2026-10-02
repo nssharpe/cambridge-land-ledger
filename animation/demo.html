@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Lots</title>
+<link rel="stylesheet" href="two-lots.css">
+<style>
+  /* demo page only: page background follows the same tokens */
+  html { background: #eef2f1; color: #14222a; }
+  @media (prefers-color-scheme: dark) { html { background: #0f171b; color: #e6eeee; } }
+  html[data-theme="dark"] { background: #0f171b; color: #e6eeee; }
+  html[data-theme="light"] { background: #eef2f1; color: #14222a; }
+  body { margin: 0; padding: 16px; font-family: "Spectral", Georgia, serif; }
+</style>
+</head>
+<body>
+<main>
+  <div id="two-lots"></div>
+</main>
+<script src="two-lots.js"></script>
+<script>
+  // demo-only overrides: ?theme=dark|light, ?reduced=1, ?t=<seconds>
+  var q = new URLSearchParams(location.search);
+  if (q.get('theme')) { document.documentElement.setAttribute('data-theme', q.get('theme')); }
+  var opts = {};
+  if (q.get('reduced')) { opts.reducedMotion = q.get('reduced') === '1'; }
+  var tl = window.TwoLots.mount(document.getElementById('two-lots'), opts);
+  if (q.get('scene')) { tl.goScene(Number(q.get('scene')) - 1); }
+  if (q.get('t')) { tl.seek(Number(q.get('t'))); }
+  if (q.get('play') === '1') { tl.play(); }
+</script>
+</body>
+</html>
