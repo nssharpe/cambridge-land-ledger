@@ -51,7 +51,7 @@
     <p>For each scenario the model exempts a fraction <em>f</em> of every building's assessed value, so taxable value becomes land plus (1 &minus; <em>f</em>) times building. A 50% exemption works out to taxing land at twice the building rate (2:1), 75% is 4:1, and 100% taxes land only.</p>
     <ul>
       <li><strong>Revenue neutral within each class.</strong> The residential class and the commercial/industrial class each raise exactly what they raise in FY2026, so the model re-solves the rate in each class. Classification shares don't change.</li>
-      <li><strong>Residential exemption, treatment (c).</strong> The exemption stays at 30% of the average residential taxable value, recomputed on post-exemption values ($510,208 times mean post-exemption value over mean assessed value, or $347,848 at 50%). That keeps each owner-occupant's dollar savings close to today's $3,403. The 35% option scales this by 35/30.</li>
+      <li><strong>Residential exemption, treatment (c).</strong> The exemption stays at 30% of the average residential taxable value, recomputed on post-exemption values ($510,208 times mean post-exemption value over mean assessed value, or $342,190 at 50%). State law sets the exemption as a share of the average residential value (at most 35%), so it shrinks with the new values. Holding it at today's $510,208 would make it about 45% of the new average, over the legal limit, and would hand every owner-occupant a bigger exemption paid for by rentals. That keeps each owner-occupant's dollar savings close to today's $3,403. The 35% option scales this by 35/30.</li>
       <li><strong>Coverage.</strong> "Residential only" re-solves the residential class and leaves commercial bills alone. Since each class is solved separately, residential results are the same under both coverage options.</li>
       <li><strong>Medians.</strong> Percentage medians use properties with a FY2026 bill above $0, and "paying more" means an increase of more than $0.50.</li>
       <li><strong>Map.</strong> Parcels are dissolved by map-lot, simplified by 0.75 m and rounded to 5 decimal places. Condo units are summed to their building. Land $/sq ft is assessed land divided by the parcel's GIS area.</li>
@@ -64,9 +64,9 @@
         <thead><tr><th scope="col">Scenario</th><th scope="col">Building exemption</th><th scope="col">Land:building</th><th scope="col">Residential land / building</th><th scope="col">Commercial land / building</th></tr></thead>
         <tbody>
           <tr><th scope="row">Today</th><td>0%</td><td>1:1</td><td>6.67 / 6.67</td><td>14.07 / 14.07</td></tr>
-          <tr><th scope="row">S1</th><td>50%</td><td>2:1</td><td>9.781 / 4.891</td><td>22.322 / 11.161</td></tr>
-          <tr><th scope="row">S2</th><td>75%</td><td>4:1</td><td>12.743 / 3.186</td><td>31.583 / 7.896</td></tr>
-          <tr><th scope="row">S3</th><td>100%</td><td>land only</td><td>18.163 / 0</td><td>53.979 / 0</td></tr>
+          <tr><th scope="row">S1</th><td>50%</td><td>2:1</td><td>9.941 / 4.970</td><td>22.327 / 11.163</td></tr>
+          <tr><th scope="row">S2</th><td>75%</td><td>4:1</td><td>13.154 / 3.289</td><td>31.597 / 7.899</td></tr>
+          <tr><th scope="row">S3</th><td>100%</td><td>land only</td><td>19.272 / 0</td><td>54.035 / 0</td></tr>
         </tbody>
       </table>
     </div>
@@ -74,16 +74,24 @@
     <h2 id="checks">Checks</h2>
     <ul>
       <li>Modeled class values match the official FY2026 figures within 0.9%, and class levies within 1.7%.</li>
-      <li>The calculator reruns the model's formula on all 25,400 taxable properties in your browser. Checked against the model's own output, it matches every property's S1 and S3 bill within 3 cents, keeps each class levy neutral within $1, and reproduces every published S1 group median within 0.1 point. With no building exemption and the 30% residential exemption, it reproduces FY2026 bills exactly.</li>
+      <li>The calculator reruns the model's formula on all 25,400 taxable properties in your browser. Checked against the model's own output (before the condo land update, which is applied to the data files by <code>analysis/condo_land/apply_condo_land.py</code>), it matches every property's S1 and S3 bill within 3 cents, keeps each class levy neutral within $1, and reproduces every published S1 group median within 0.1 point. With no building exemption and the 30% residential exemption, it reproduces FY2026 bills exactly.</li>
       <li>OpenStreetMap parking on parcels adds up to 122 acres on taxable land and 45 acres on tax-exempt land, which matches the analysis report.</li>
     </ul>
 
     <h2 id="caveats">Caveats</h2>
     <ul>
-      <li id="condo-land"><strong>Condo land is estimated.</strong> Condo units carry $0 land value in the open data, so I estimate each building's land from the median land price per square foot of comparable parcels in the same tax district and zoning, times the lot area. That land is shared among units by assessed value and capped at 90% of a unit's value. In 2- and 3-unit condo buildings this gives a land share about 24% below comparable two- and three-family houses, so it's probably low. Raising all condo land by the full gap (&times;1.315) doesn't change any group's direction, but it does move the residential median at 50% from &minus;2.4% to +0.8%.</li>
+      <li id="condo-land"><strong>Condo land is estimated.</strong> Condo units carry $0 land value in the open data, so I estimate each condo building's land from how the Assessor values comparable lots, then share it among the building's units by assessed value, capped at 90% of a unit's value.
+        <ul>
+          <li><em>The model.</em> The Assessor's land values follow a tight pattern: within a tax district and zoning district, land value rises with lot size but less than proportionally (doubling a lot adds about 30%), and larger buildings carry somewhat more land value. For condo buildings of 1 to 3 units I use a lot-size curve fit on one- to three-family and 4-to-8-unit lots. For 4 or more units I use a curve in lot size and unit count fit on all non-condo residential lots, including large apartment buildings.</li>
+          <li><em>Checks.</em> In 5-fold cross-validation on non-condo lots, the typical error is 6% (it was 19% for the flat median $/sq ft I used before). The best check is 379 lots that were houses or apartments between FY2015 and FY2025 and are condo buildings now. I took the Assessor's own land value from the last year before conversion and grew it by that district's land trend. The estimate is unbiased on those lots, with a typical error of 4% for 2- and 3-unit buildings and 21% for larger ones (the old method ran 12% high overall and 33% high on lots of 5,000 sq ft or more).</li>
+          <li><em>Uncertainty.</em> Large condo buildings are the least certain, since few were ever apartments and the curve slightly undervalues large apartment lots in cross-validation. Moving small-building land by &plusmn;10% and large-building land by &minus;20% to +30% leaves the 50% medians between +10% and +13% for owner-occupied single-family homes and between &minus;10% and &minus;16% for condos. Splitting land among units by living area instead of value changes no group median by more than 1 point.</li>
+          <li><em>What changed.</em> The earlier version of this site used the flat median, which overstated condo land, mostly on big lots. Total condo land fell from $4.21B to $3.30B, and the 50% medians moved from +9.5% to +12.0% for owner-occupied single-family homes and from &minus;9.3% to &minus;13.3% for condos.</li>
+        </ul>
+      </li>
       <li><strong>Owner-occupancy is undercounted.</strong> The open-data exemption flag covers about 900 fewer owner-occupants (6.7%) than the official count, and those owners get treated as rental property here.</li>
       <li><strong>The parking-land result is fragile.</strong> A regression of land $/sq ft on lot size with tax district &times; zoning fixed effects puts parking-lot land 50% below other commercial land (95% interval 17% to 70% below). If I drop cells with missing zoning, the gap shrinks to 27% (10% to 41%). The model can't see frontage, shape, easements or leases, so I'd treat any gap as a question for review.</li>
       <li><strong>Other-city assumptions.</strong> Owner-occupancy outside Cambridge comes from a mailing-address match. Residential exemptions are assumed to be zero, which I haven't verified for Worcester and Springfield. Condo land is imputed in every city, and personal property is held fixed.</li>
+      <li><strong>Community Preservation Act surcharge.</strong> Bills here leave out the 3% CPA surcharge (on value above the residential exemption and a further $100,000), about 2% of a typical owner-occupant's bill.</li>
       <li><strong>Static values.</strong> The model holds FY2026 values fixed. A real reform would change behavior and assessments over time, and it would phase in.</li>
       <li><strong>State rules.</strong> The FY2028 effects of correcting commercial land depend on the 175% commercial cap binding the way the City projects. The state Division of Local Services should confirm the math before anyone quotes dollar figures.</li>
       <li><strong>Legal odds.</strong> The 25% to 40% estimate for a building exemption surviving court review is my best guess, and I'm not a lawyer.</li>
@@ -94,6 +102,7 @@
       <li><code>analysis/model.py</code>: cleaning, condo land estimate, scenarios, checks and the full report.</li>
       <li><code>analysis/parking_osm.py</code>: OpenStreetMap parking joined to parcels.</li>
       <li><code>analysis/cities_model.py</code>: the four-city comparison.</li>
+      <li><code>analysis/condo_land/</code>: the condo land model, its validation against pre-conversion land values, and the script that applies it to this site's data files.</li>
       <li><code>site/build_data.py</code>: builds this site's data files; <code>site/tests/validate_calc.js</code> checks the calculator against the model.</li>
     </ul>
     <p>The source for this site is on GitHub at <a href="https://github.com/nssharpe/cambridge-land-ledger">github.com/nssharpe/cambridge-land-ledger</a>, and the analysis code is available if you ask.</p>

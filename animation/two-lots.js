@@ -11,8 +11,8 @@
   var STORY = /*STORY-JSON-START*/{
     "duration": 73,
     "model": {
-      "cip": { "levy": 417100000, "rate0": 14.07, "rateLandOnly": 53.979 },
-      "res": { "rate0": 6.67, "landRate21": 9.781, "bldgRate21": 4.891 },
+      "cip": { "levy": 417100000, "rate0": 14.07, "rateLandOnly": 54.035 },
+      "res": { "rate0": 6.67, "landRate21": 9.941, "bldgRate21": 4.970 },
       "lots": {
         "sqft": 10000, "landPsf": 120,
         "parking": { "land": 1200000, "bldg": 20000 },
@@ -20,8 +20,8 @@
       },
       "homes": {
         "sqft": 5000, "landPsf": 240,
-        "house": { "land": 1200000, "bldg": 1230000 },
-        "condo": { "land": 200000, "bldg": 644000, "units": 6 }
+        "house": { "land": 1200000, "bldg": 1185000 },
+        "condo": { "land": 150000, "bldg": 745000, "units": 6 }
       },
       "barMaxTax": 115000,
       "barMaxHome": 18000
@@ -56,10 +56,10 @@
         "id": 4, "short": "Inside each class", "title": "In Cambridge, the shift stays inside each class", "start": 42, "end": 60, "rest": 45.5, "restReduced": 59.9,
         "captions": [
           { "start": 42, "end": 47, "text": "Massachusetts taxes homes and businesses as separate classes, so any shift stays inside each class." },
-          { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 9.5% more, and a condo in a 6-unit building on a similar lot pays about 9.3% less." },
+          { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 12% more, and a condo in a 6-unit building on a similar lot pays about 13% less." },
           { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax from houses to condos." }
         ],
-        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.78 for land and $4.89 for buildings. Cambridge medians at 2:1 are +9.5% for owner-occupied single-family homes and -9.3% for condos."
+        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.94 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -13% for condos."
       },
       {
         "id": 5, "short": "What to do first", "title": "What to do first", "start": 60, "end": 73, "rest": 64.6, "restReduced": 67.9,
