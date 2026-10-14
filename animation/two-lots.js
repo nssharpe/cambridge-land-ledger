@@ -11,8 +11,8 @@
   var STORY = /*STORY-JSON-START*/{
     "duration": 73,
     "model": {
-      "cip": { "levy": 417100000, "rate0": 14.07, "rateLandOnly": 54.035 },
-      "res": { "rate0": 6.67, "landRate21": 9.941, "bldgRate21": 4.970 },
+      "cip": { "levy": 417100000, "rate0": 14.07, "rateLandOnly": 54.009 },
+      "res": { "rate0": 6.67, "landRate21": 9.949, "bldgRate21": 4.974 },
       "lots": {
         "sqft": 10000, "landPsf": 120,
         "parking": { "land": 1200000, "bldg": 20000 },
@@ -59,7 +59,7 @@
           { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 12% more, and a condo in a 6-unit building on a similar lot pays about 13% less." },
           { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax from houses to condos." }
         ],
-        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.94 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -13% for condos."
+        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.95 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -13% for condos."
       },
       {
         "id": 5, "short": "What to do first", "title": "What to do first", "start": 60, "end": 73, "rest": 64.6, "restReduced": 67.9,

@@ -28,14 +28,22 @@ The site's sensitivity band moves small-building land by ±10% and large-buildin
 
 ## Running it
 
+The site's data files come from the analysis pipeline, which is not in this repo (`analysis/model.py` and `site/build_data.py` in the author's local project). `model.py` calls `estimator.py`:
+
+- `estimate_building_land(rows)` runs on the FY2026 property database CSV read as strings (`csv.DictReader`; pandas NaNs break the fit). Multiplied by the condo-land sensitivity factor.
+- Building land is shared by assessed value among all of the building's land-0 units (`allocate_to_units` does the same for `*CONDO` classes), capped at 90% of each unit's value. Units joined to their parent by map-lot prefix share it too.
+- Falls back to the old flat median $/sq ft method for 7 buildings with no estimate (6 in tax district R1A, which has no non-condo residential lots to fit, with 1,413 units; 1 parent record with no GISID, 3 units), 22 buildings where non-condo-class units (MULTI UNIT CNDO, RESRCH IND CND, exempt units) hold over half the value (101 units), and 140 units whose parent record has no land area.
+
+Rebuild: `python analysis/model.py`, then `python site/build_data.py --reference <tmp>/ref.json` and `node site/tests/validate_calc.js <tmp>/ref.json`. Copy only `calc.json`, `parcels.json` and `summary.json` into this repo: `build_data.py` rebuilds the other-city rows of `cities.json` from the earlier model run's table, so take only its Cambridge row.
+
+`apply_condo_land.py` (below) is superseded. It rescaled the earlier data files to the predicted building land and is kept for the record.
+
 ```
 # 1. FY2015–FY2026 assessor CSVs and FY2026 parcels from github.com/cambridgegis/cambridgegis_data (Assessing/)
 python3 fit_validate.py <cambridgegis_data> <out_dir>          # writes condo_land_pred.json, validation.json
 python3 join_features.py <site> <ASSESSING_ParcelsFY2026.geojson> <out_dir>/feat_ml.json   # map features -> map-lot
-# 2. Rescale condo land in the site's data files (reads the previous data files from <orig_data_dir>)
+# 2. (superseded) Rescale condo land in the site's data files (reads the previous data files from <orig_data_dir>)
 python3 apply_condo_land.py <site> <orig_data_dir> <out_dir>/feat_ml.json <out_dir>/condo_land_pred.json
 ```
 
-`join_features.py` needs `shapely`. `apply_condo_land.py` rewrites `data/calc.json`, `data/parcels.json` (land $/sq ft and building-per-$1-land for condo buildings) and `data/summary.json`.
-
-`estimator.py` is the drop-in replacement for the old estimate in `analysis/model.py` and `site/build_data.py` (not in this repo): `estimate_building_land(rows)` then `allocate_to_units(...)`. It reproduces `fit_validate.py` exactly.
+`join_features.py` needs `shapely`. `estimator.py` reproduces `fit_validate.py` exactly.

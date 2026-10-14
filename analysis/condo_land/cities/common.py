@@ -51,13 +51,14 @@ GROUPS = {
     # 440-442 ind. vacant
     "Vacant+parking": {"106", "130", "131", "132", "336", "337",
                        "390", "391", "392", "440", "441", "442"},
-    # 320-328 retail, shopping centres, supermarkets, small retail,
-    # eating & drinking (326)
-    "Retail (incl. restaurant)": {f"{c}" for c in range(320, 329)},
-    # 340-349 office/bank/medical, 400-439 manufacturing, warehouse,
-    # utilities, mining (400-439; 440-442 vacant excluded)
-    "Office+industrial": {f"{c}" for c in range(340, 350)}
-    | {f"{c}" for c in range(400, 440)},
+    # Retail and Office+industrial use the code lists of analysis/cities_model.py (group_of),
+    # which produced the published columns:
+    # retail 321-325 and 327, restaurant 326
+    "Retail (incl. restaurant)": {f"{c}" for c in range(321, 328)},
+    # office 340-346 and 348 (347 is "other commercial"); industrial/warehouse 313-316,
+    # 400-419, 443-449, 453-499 (420-439 and 450-452 utilities, 440-442 vacant excluded)
+    "Office+industrial": {f"{c}" for c in [*range(340, 347), 348, *range(313, 317), *range(400, 420),
+                                          *range(443, 450), *range(453, 500)]},
 }
 GROUP_COLS = ["SF owner-proxy", "SF all", "2-3F", "Condo", "Apts 4+",
               "Vacant+parking", "Retail (incl. restaurant)", "Office+industrial"]

@@ -24,8 +24,8 @@ Run from scratch: `./run.sh` (it downloads the data, then runs `validate_land.py
 | Condo | 102 |
 | Apts 4+ | 111–125 |
 | Vacant+parking | 106, 130, 131, 132, 336, 337, 390, 391, 392, 440, 441, 442 |
-| Retail (incl. restaurant) | 320–328 |
-| Office+industrial | 340–349, 400–439 |
+| Retail (incl. restaurant) | 321–327 |
+| Office+industrial | 313–316, 340–346, 348, 400–419, 443–449, 453–499 |
 | Land-model comparables | 101, 104, 105, 111, 112 (only LOC_IDs with a single record, land > 0, polygon > 500 sq ft, 0.5%/99.5% log $/sqft trimmed) |
 
 ### Tax rates (per $1,000)
@@ -167,7 +167,8 @@ The flat $/sqft method over-predicts lots above 20k sq ft by e^0.4 to e^1.5. The
 ## Notes on the reproduction
 - Residential columns and Vacant+parking match the published numbers within ±0.35 pp. SF $ matches within $4 (Fitchburg C50 is off by $9), so the published rows almost certainly used a flat $/sqft condo land estimate at roughly zoning-district level.
 - **Office+industrial does not reproduce**: it is off by −7.9 (Worcester), −2.6 (Springfield), −3.3/−4.1 (Fitchburg) and −1.5/−1.8 (Leominster) pp. Retail is off by +0.3 to +0.8, and by −2.4/−2.7 in Leominster. An exhaustive search over code subsets (for example 340/341/343, 400–404, 41x–43x, 316, 35x, mixed 04x) found no natural list that matches all six rows within 1 pp. Also, uniform shifts from changing class composition (mixed-use or chapter-land handling, OTHER_VAL taxed fully) made things worse. So the original's commercial code lists and/or data vintage are unknown. I kept the lists above. Condo land does not affect the C-class A50 columns.
-- Fitchburg may differ partly because the current file is FY27.
+- **Update: the original code lists.** The original run is `analysis/cities_model.py` in the author's local project (not in this repo). Its `group_of` gives retail 321–325 and 327 plus restaurant 326, office 340–346 and 348, and industrial/warehouse 313–316, 400–419, 443–449 and 453–499 (420–439 and 450–452 are utilities, 440–442 vacant). `common.py` now uses those lists (the table above). The tables in this report predate that change. With the original lists, reproduced minus published Office+industrial is −3.2 (Worcester), −1.0 (Springfield), −7.5/−8.4 (Fitchburg) and −2.1/−2.4 (Leominster) pp, and Retail is +0.6, +0.3, +0.8/+0.1 and −2.4/−2.7 pp. So the code lists are not the main cause.
+- The original used the same assessor files (`M348Assess_CY26_FY26`, `M281Assess_CY26_FY26`, `M097Assess_CY26_FY27`, `M153Assess_CY25_FY26`), so the data vintage is not the cause either. The remaining gap is in how the commercial class is built. The original imputes land for every land-0 taxable account on a shared LOC_ID, including commercial condo units, which hold 1.6% (Worcester), 3.6% (Springfield), 2.5% (Fitchburg) and 1.3% (Leominster) of commercial value; this model leaves those at $0 land. The original also puts 2xx and mixed-use 02x in R, dedupes by PROP_ID and repairs rows with TOTAL_VAL = 0. Matching these is a port of the original's commercial-class handling, not a code-list fix, so `data/cities.json` keeps the published rows plus the change in condo land.
 
 ## New results: what changes
 - **Worcester**: Condo goes from −7.6 to −3.2. Large complexes (4,284 of 5,001 units are in 9+ unit buildings) get more land on the apartment schedule. Small condo buildings get less. SF effects barely move.
