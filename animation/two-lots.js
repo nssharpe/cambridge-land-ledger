@@ -57,7 +57,7 @@
         "captions": [
           { "start": 42, "end": 47, "text": "Massachusetts taxes homes and businesses as separate classes, so any shift stays inside each class." },
           { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 12% more, and a condo in a 6-unit building on a similar lot pays about 13% less." },
-          { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax from houses to condos." }
+          { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax off condos and onto houses." }
         ],
         "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.95 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -13% for condos."
       },
@@ -305,7 +305,7 @@
     }
     var rowH = pairRow(resBox, 'Single-family house, big lot');
     var rowC = pairRow(resBox, 'One home in a 6-unit condo building');
-    var resNote = el('p', { 'class': 'tl-punch' }, resBox, 'So in Cambridge this mostly moves tax from houses to condos.');
+    var resNote = el('p', { 'class': 'tl-punch' }, resBox, 'So in Cambridge this mostly moves tax off condos and onto houses.');
 
     // next steps
     var nextBox = el('div', { 'class': 'tl-next' }, panel);
