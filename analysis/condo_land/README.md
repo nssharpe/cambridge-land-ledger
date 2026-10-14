@@ -38,4 +38,4 @@ python3 apply_condo_land.py <site> <orig_data_dir> <out_dir>/feat_ml.json <out_d
 
 `join_features.py` needs `shapely`. `apply_condo_land.py` rewrites `data/calc.json`, `data/parcels.json` (land $/sq ft and building-per-$1-land for condo buildings) and `data/summary.json`.
 
-`analysis/model.py` and `site/build_data.py` still use the old estimate. They need the same change before the data files are next rebuilt from scratch.
+`estimator.py` is the drop-in replacement for the old estimate in `analysis/model.py` and `site/build_data.py` (not in this repo): `estimate_building_land(rows)` then `allocate_to_units(...)`. It reproduces `fit_validate.py` exactly.
