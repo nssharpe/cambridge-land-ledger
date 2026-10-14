@@ -213,8 +213,8 @@
   // ------------------------------------------------------------ map layer controls
   var CAPTIONS = {
     land: "Land value per square foot of parcel area, with the most valuable land in yellow. Tax-exempt parcels are shown too, since the City still assesses their land.",
-    ratio: "Assessed building value for each dollar of land value. Yellow parcels have very little building on their land, like parking, vacant lots, gas stations and older low-rise buildings. Condo buildings use estimated land.",
-    park: "Surface parking lots drawn in OpenStreetMap, clipped to Cambridge parcels. Orange lots are on taxable parcels and blue lots are on tax-exempt parcels like universities. Volunteers draw this map, so some lots may be missing or out of date.",
+    ratio: "Assessed building value for each dollar of land value. Yellow parcels have very little building on their land, like parking, vacant lots, gas stations and older low-rise buildings. Tax-exempt parcels (parks, universities and other public land) are left blank, since a tax change wouldn't reach them. Condo buildings use estimated land.",
+    park: "Surface parking lots drawn in OpenStreetMap, clipped to Cambridge parcels. Orange lots are on taxable parcels and blue lots are on tax-exempt parcels like universities. Purple-striped parcels are taxable land the Assessor classes as vacant. Volunteers draw the parking map, so some lots may be missing or out of date.",
     tax: "Change in each parcel's tax bill with the calculator's current settings. Condo buildings show the total for all their units. Blue pays less, orange pays more."
   };
   function wireMap() {

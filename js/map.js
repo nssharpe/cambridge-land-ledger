@@ -5,16 +5,17 @@
   var LAND = { bins: [100, 150, 200, 250, 300, 400, 600],
     colors: ["#440154", "#46327e", "#365c8d", "#277f8e", "#1fa187", "#4ac16d", "#a0da39", "#fde725"],
     labels: ["<$100", "100", "150", "200", "250", "300", "400", "600+"] };
-  var RATIO = { bins: [0.25, 0.5, 1, 2, 4],
-    colors: ["#fee838", "#c8b866", "#948e77", "#666970", "#35456c", "#00224e"],
-    labels: ["<0.25", "0.25", "0.5", "1", "2", "4+"] };
+  // bins spread taxable parcels across the ramp (taxable deciles run about 0.56 to 3.1); tax-exempt parcels are left blank
+  var RATIO = { bins: [0.25, 0.5, 0.75, 1, 1.5, 2, 3],
+    colors: ["#fde737", "#d9c757", "#b4a96b", "#918f73", "#737375", "#585d6e", "#3b496c", "#00224e"],
+    labels: ["<0.25", "0.25", "0.5", "0.75", "1", "1.5", "2", "3+"] };
   var TAX = { bins: [-20, -5, -1, 1, 5, 20],
     colors: ["#2c5f9e", "#6f9ccf", "#bcd3ea", "#e9e6df", "#f3c99a", "#df8a3e", "#a8510a"],
     labels: ["≤−20%", "−20", "−5", "±1%", "+5", "+20", "≥+20%"] };
   // theme-dependent neutrals (fills only; never behind text)
   var NEUTRAL = {
-    light: { none: "#dfe5e3", exempt: "#a9b3b6", parkBase: "#d9dfdd", parkTax: "#c75400", parkEx: "#0062a3", line: "#ffffff" },
-    dark:  { none: "#24333a", exempt: "#5b6a70", parkBase: "#2a3940", parkTax: "#ff8c42", parkEx: "#56b4e9", line: "#16232a" }
+    light: { none: "#dfe5e3", exempt: "#a9b3b6", parkBase: "#d9dfdd", parkTax: "#c75400", parkEx: "#0062a3", vacant: "#8e24aa", line: "#ffffff" },
+    dark:  { none: "#24333a", exempt: "#5b6a70", parkBase: "#2a3940", parkTax: "#ff8c42", parkEx: "#56b4e9", vacant: "#d59cf0", line: "#16232a" }
   };
   var LABELS = {
     "4-8 apt": "Apartment building, 4 to 8 units", ">8 apt": "Apartment building, 9+ units",
@@ -41,10 +42,12 @@
   function init(o) {
     var canvas = o.canvas, stage = o.stage, tip = o.tooltip, legendEl = o.legend, P = o.parcels, PK = o.parking;
     var ctx = canvas.getContext("2d");
-    var nF = P.geom.length, layer = "land", scen = null, scenLabel = "", hover = -1;
+    var nF = P.geom.length, layer = "park", scen = null, scenLabel = "", hover = -1;
     var W = 0, H = 0, dpr = 1, transform = d3.zoomIdentity;
     var paths = [], bbox = new Float32Array(nF * 4), rings = [], grid = null, GC = 24, gw = 0, gh = 0;
     var parkPaths = { taxable: null, exempt: null };
+    var VACANT = P.labels.indexOf("vacant/developable land"), nVacant = 0;
+    for (var v = 0; v < P.lab.length; v++) if (P.lab[v] === VACANT && P.status[v] === 1) nVacant++;
 
     // lon/lat bounds for fitting (winding-independent)
     var minX = 180, minY = 90, maxX = -180, maxY = -90;
@@ -102,15 +105,28 @@
         var v = P.lpsf[f]; return v == null ? N.none : LAND.colors[binIndex(LAND.bins, v)];
       }
       if (layer === "ratio") {
+        if (st === 2) return N.none;
         var r = P.ratio[f]; return (r == null || st === 0) ? N.none : RATIO.colors[binIndex(RATIO.bins, r)];
       }
-      if (layer === "park") return st === 0 ? N.none : N.parkBase;
+      if (layer === "park") return st === 0 ? N.none : (st === 1 && P.lab[f] === VACANT ? N.vacant : N.parkBase);
       if (layer === "tax") {
         if (st === 0) return N.none;
         if (st === 2 || !scen || !(scen.cur[f] > 0)) return N.exempt;
         return TAX.colors[binIndex(TAX.bins, (scen.now[f] - scen.cur[f]) / scen.cur[f] * 100)];
       }
       return N.none;
+    }
+
+    // vacant land is drawn as diagonal stripes so it reads apart from parking by pattern, not just hue
+    function stripes(N, scale) {
+      var t = document.createElement("canvas"); t.width = t.height = 8;
+      var g = t.getContext("2d");
+      g.fillStyle = N.parkBase; g.fillRect(0, 0, 8, 8);
+      g.strokeStyle = N.vacant; g.lineWidth = 3;
+      g.beginPath(); g.moveTo(-2, 10); g.lineTo(10, -2); g.moveTo(-2, 2); g.lineTo(2, -2); g.moveTo(6, 10); g.lineTo(10, 6); g.stroke();
+      var pat = ctx.createPattern(t, "repeat");
+      if (pat.setTransform && window.DOMMatrix) pat.setTransform(new DOMMatrix().scale(1 / scale));
+      return pat;
     }
 
     var pending = false;
@@ -126,7 +142,7 @@
       var byColor = {};
       for (var f = 0; f < nF; f++) { var c = fillFor(f, N); (byColor[c] || (byColor[c] = [])).push(f); }
       Object.keys(byColor).forEach(function (c) {
-        ctx.fillStyle = c;
+        ctx.fillStyle = (layer === "park" && c === N.vacant) ? stripes(N, dpr * k) : c;
         byColor[c].forEach(function (f) { ctx.fill(paths[f], "evenodd"); });
       });
       if (k >= 2.5) {           // parcel edges once zoomed in
@@ -226,12 +242,14 @@
       }
       var N = isDark() ? NEUTRAL.dark : NEUTRAL.light;
       if (layer === "land") html = ramp("Land value, $ per sq ft of parcel", LAND);
-      if (layer === "ratio") html = ramp("Building value per $1 of land (low = little building on valuable land)", RATIO);
+      if (layer === "ratio") html = ramp("Building value per $1 of land (low = little building on valuable land)", RATIO) +
+        '<div class="keys" style="margin-top:6px"><span class="key"><i style="background:' + N.none + '"></i>Tax-exempt or no assessor record (left out)</span></div>';
       if (layer === "tax") html = ramp("Tax bill change. " + scenLabel, TAX) +
         '<div class="keys" style="margin-top:6px"><span class="key"><i style="background:' + N.exempt + '"></i>Tax-exempt</span></div>';
-      if (layer === "park") html = '<span class="ttl">Surface parking (OpenStreetMap)</span><div class="keys">' +
+      if (layer === "park") html = '<span class="ttl">Surface parking (OpenStreetMap) and vacant land</span><div class="keys">' +
         '<span class="key"><i style="background:' + N.parkTax + '"></i>On taxable parcels (' + PK.acres.taxable + ' acres)</span>' +
         '<span class="key"><i style="background:' + N.parkEx + '"></i>On tax-exempt parcels (' + PK.acres.exempt + ' acres)</span>' +
+        '<span class="key"><i style="background:repeating-linear-gradient(135deg,' + N.vacant + ' 0 3px,' + N.parkBase + ' 3px 6px)"></i>Vacant land, taxable (' + nVacant + ' parcels)</span>' +
         '<span class="key"><i style="background:' + N.parkBase + '"></i>Other parcels</span></div>';
       legendEl.innerHTML = html;
     }
