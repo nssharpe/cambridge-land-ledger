@@ -305,3 +305,13 @@ code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-siz
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
+
+/* Expandable primer (section 02). Text pairs: --ink on --surface, --accent on --surface. */
+.primer { background: var(--surface); border-left: 4px solid var(--accent); margin: 16px 0 20px; max-width: 72ch; }
+.primer summary { cursor: pointer; padding: 12px 14px; font-family: var(--font-head); font-weight: 600; color: var(--ink); }
+.primer summary:hover { background: var(--hover); }
+.primer summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.primer[open] summary { border-bottom: 1px solid var(--rule); }
+.primer-body { padding: 4px 14px 12px; color: var(--ink); }
+.primer-body ul { padding-left: 1.3em; }
+.primer-body li { margin-bottom: 6px; }
