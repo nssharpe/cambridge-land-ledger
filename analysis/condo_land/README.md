@@ -47,3 +47,24 @@ python3 apply_condo_land.py <site> <orig_data_dir> <out_dir>/feat_ml.json <out_d
 ```
 
 `join_features.py` needs `shapely`. `estimator.py` reproduces `fit_validate.py` exactly.
+
+## Check: value shares vs. master-deed percentage interests
+
+The model shares each building's land among its units by assessed value. Under M.G.L. c. 183A, each unit legally owns its percentage interest in the common elements, set in the master deed. To test the difference, I transcribed the percentage interests for a sample of 25 condo buildings (261 taxable units) from the Middlesex South Registry of Deeds. For the larger buildings I searched the registry index for amendments and used the latest set that restates the percentages. For several small buildings the figures come from the master deed or a unit deed, without an amendment search, and one multi-parcel condominium's amendments weren't checked. The unit-level file stays out of git because it lists unit numbers. `deed_check.py` compares the two splits and prints only aggregates.
+
+Both splits are normalized over the same units in each building. Each split gets the model's building land, with the same 90% cap. Bills are at a 50% building exemption, with both classes and the 30% residential exemption.
+
+| Building size | Buildings | Units | Mean abs. gap in unit share | Mean relative gap | Median elasticity of deed share to value share* | Median abs. bill change | Units with bill change > 5% / > 10% |
+|---|---|---|---|---|---|---|---|
+| 2-3 units | 8 | 18 | 3.4 pts | 7% | 0.94 | 1.1% ($50) | 22% / 6% |
+| 4-8 units | 8 | 39 | 1.4 pts | 7% | 1.14 | 1.2% ($47) | 8% / 8% |
+| 9+ units | 9 | 204 | 0.5 pts | 9% | 0.66 | 1.8% ($38) | 20% / 8% |
+| All | 25 | 261 | 1.7 pts | 8% | 0.94 | 1.5% ($39) | 18% / 8% |
+
+- The median unit's bill moves about 1.5% (about $40 a year) when land is split by percentage interest instead of value. Bills move more than 10% for 8% of units, The largest change is +263%. It's a unit assessed at about a third of its building's average value, and its deed share of land is 3.4 times its value share.
+- In 4 of 25 buildings the deeds give every unit the same percentage. Most other deeds set percentages by floor area or by each unit's relative value when the condominium was created, so they roughly track assessed value.
+*Excludes the 4 buildings where every unit has the same percentage.
+
+- In large buildings, deed percentages tend to be flatter than assessed values (median elasticity 0.66, ranging from about 0 to 1.3 across buildings). Where that holds, the highest-valued units would carry less land than the model gives them, and the cheapest units more.
+- Building land totals stay the same except where the 90% cap binds under the percentage split. That happens for 6 units in 2 buildings and removes $77,000 of land in total. Class and city-wide results are effectively unchanged; the split mostly moves bills within a building.
+- Caveats: the sample isn't random, and it's small (8 or 9 buildings per size class). One condominium covers more than one parcel, so I compared its shares within the sampled parcel. A few values were read from poor scans; those are noted in the unit file. Where later amendments didn't restate the percentages, I used the original master deed.
