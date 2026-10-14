@@ -234,11 +234,12 @@
     var msg = $("map-msg");
     var calcP = getJSON("data/calc.json").then(function (c) { D = LedgerCalc.prepare(c); wireCalc(); renderCalc(); });
     getJSON("data/cities.json").then(cities).catch(function () { /* table stays empty; text above carries the numbers */ });
-    Promise.all([getJSON("data/parcels.json"), getJSON("data/parking.json"), calcP]).then(function (res) {
+    var streetsP = getJSON("data/streets.json").catch(function () { return null; });   // labels are optional
+    Promise.all([getJSON("data/parcels.json"), getJSON("data/parking.json"), calcP, streetsP]).then(function (res) {
       if (!window.d3 || !d3.geoMercator) { msg.textContent = "The map library didn't load. Check your connection and reload the page."; return; }
       nFeatures = res[0].geom.length;
       map = LedgerMap.init({ canvas: $("map-canvas"), stage: $("map-stage"), tooltip: $("tooltip"), legend: $("map-legend"),
-                              parcels: res[0], parking: res[1] });
+                              parcels: res[0], parking: res[1], streets: res[3] });
       msg.remove();
       renderCalc();
       var ql = null;

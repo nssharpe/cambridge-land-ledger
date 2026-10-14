@@ -14,8 +14,8 @@
     labels: ["≤−20%", "−20", "−5", "±1%", "+5", "+20", "≥+20%"] };
   // theme-dependent neutrals (fills only; never behind text)
   var NEUTRAL = {
-    light: { none: "#dfe5e3", exempt: "#a9b3b6", parkBase: "#d9dfdd", parkTax: "#c75400", parkEx: "#0062a3", vacant: "#8e24aa", line: "#ffffff" },
-    dark:  { none: "#24333a", exempt: "#5b6a70", parkBase: "#2a3940", parkTax: "#ff8c42", parkEx: "#56b4e9", vacant: "#d59cf0", line: "#16232a" }
+    light: { none: "#dfe5e3", exempt: "#a9b3b6", parkBase: "#d9dfdd", parkTax: "#c75400", parkEx: "#0062a3", vacant: "#8e24aa", line: "#ffffff", street: "#7d898d" },
+    dark:  { none: "#24333a", exempt: "#5b6a70", parkBase: "#2a3940", parkTax: "#ff8c42", parkEx: "#56b4e9", vacant: "#d59cf0", line: "#16232a", street: "#7f9298" }
   };
   var LABELS = {
     "4-8 apt": "Apartment building, 4 to 8 units", ">8 apt": "Apartment building, 9+ units",
@@ -40,7 +40,8 @@
   var money = function (v) { return "$" + Math.round(v).toLocaleString("en-US"); };
 
   function init(o) {
-    var canvas = o.canvas, stage = o.stage, tip = o.tooltip, legendEl = o.legend, P = o.parcels, PK = o.parking;
+    var canvas = o.canvas, stage = o.stage, tip = o.tooltip, legendEl = o.legend, P = o.parcels, PK = o.parking, ST = o.streets;
+    var streets = [];   // [{name, rank, pts: Float32Array of base-projected x,y}]
     var ctx = canvas.getContext("2d");
     var nF = P.geom.length, layer = "park", scen = null, scenLabel = "", hover = -1;
     var W = 0, H = 0, dpr = 1, transform = d3.zoomIdentity;
@@ -92,6 +93,12 @@
           p2.closePath();
         }); });
         parkPaths[k] = p2;
+      });
+      streets = [];
+      if (ST) ST.lines.forEach(function (l) {
+        var pts = new Float32Array(l[2].length * 2);
+        l[2].forEach(function (c, i) { var xy = proj(c); pts[2 * i] = xy[0]; pts[2 * i + 1] = xy[1]; });
+        streets.push({ name: l[0] >= 0 ? ST.names[l[0]] : "", rank: l[1], pts: pts });
       });
       zoom.extent([[0, 0], [W, H]]).translateExtent([[0, 0], [W, H]]);
       transform = d3.zoomIdentity;
@@ -149,6 +156,7 @@
         ctx.strokeStyle = N.line; ctx.lineWidth = 0.6 / k;
         for (f = 0; f < nF; f++) ctx.stroke(paths[f]);
       }
+      drawStreetLines(N, k);
       if (layer === "park") {
         ctx.fillStyle = N.parkEx; ctx.fill(parkPaths.exempt, "evenodd");
         ctx.fillStyle = N.parkTax; ctx.fill(parkPaths.taxable, "evenodd");
@@ -156,6 +164,78 @@
       if (hover >= 0) {
         ctx.strokeStyle = cssVar("--ink") || "#000"; ctx.lineWidth = 2 / k; ctx.stroke(paths[hover]);
       }
+      drawStreetLabels(k);
+    }
+
+    // ---- streets: thin centerlines once zoomed in, names placed along straight stretches
+    var MIN_K_LINES = [3, 1.6, 1.6], MIN_K_LABELS = [4.5, 2.4, 1.6];   // by rank: local, secondary, main
+    function drawStreetLines(N, k) {
+      if (!streets.length) return;
+      ctx.strokeStyle = N.street; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      streets.forEach(function (s) {
+        if (k < MIN_K_LINES[s.rank]) return;
+        ctx.lineWidth = (s.rank === 2 ? 1.6 : 1) / k;
+        ctx.beginPath();
+        for (var i = 0; i < s.pts.length; i += 2) { if (i === 0) ctx.moveTo(s.pts[i], s.pts[i + 1]); else ctx.lineTo(s.pts[i], s.pts[i + 1]); }
+        ctx.stroke();
+      });
+    }
+    function drawStreetLabels(k) {
+      if (!streets.length) return;
+      var cands = streets.filter(function (s) { return s.name && k >= MIN_K_LABELS[s.rank]; });
+      if (!cands.length) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var fs = 11 + (k > 8 ? 1 : 0);
+      ctx.font = "600 " + fs + "px Archivo, Bahnschrift, 'Segoe UI', system-ui, sans-serif";
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      var ink = cssVar("--ink") || "#000", halo = cssVar("--surface") || "#fff";
+      var placed = [], lastByName = {};
+      cands.sort(function (a, b) { return b.rank - a.rank || b.pts.length - a.pts.length; });
+      cands.forEach(function (s) {
+        var n = s.pts.length / 2, sx = new Float32Array(n), sy = new Float32Array(n), cum = new Float32Array(n), on = false;
+        for (var i = 0; i < n; i++) {
+          sx[i] = transform.x + s.pts[2 * i] * k; sy[i] = transform.y + s.pts[2 * i + 1] * k;
+          if (sx[i] > -50 && sx[i] < W + 50 && sy[i] > -50 && sy[i] < H + 50) on = true;
+          if (i) cum[i] = cum[i - 1] + Math.hypot(sx[i] - sx[i - 1], sy[i] - sy[i - 1]);
+        }
+        if (!on) return;
+        var tw = ctx.measureText(s.name).width, need = tw + 12, L = cum[n - 1];
+        if (L < need) return;
+        function at(d) {
+          var i = 1; while (i < n - 1 && cum[i] < d) i++;
+          var t = (d - cum[i - 1]) / Math.max(1e-6, cum[i] - cum[i - 1]);
+          return [sx[i - 1] + (sx[i] - sx[i - 1]) * t, sy[i - 1] + (sy[i] - sy[i - 1]) * t];
+        }
+        var tries = [0.5], steps = Math.max(2, Math.min(12, Math.floor(L / need)));   // middle first, then spread out
+        for (var z = 1; z < steps; z++) tries.push(z / steps);
+        for (var q = 0; q < tries.length; q++) {
+          var d = L * tries[q], d0 = d - need / 2, d1 = d + need / 2;
+          if (d0 < 0 || d1 > L) continue;
+          var a = at(d0), b = at(d1), dx = b[0] - a[0], dy = b[1] - a[1], len = Math.hypot(dx, dy);
+          if (len < tw + 4) continue;
+          var straight = true;                     // every vertex in the window stays near the chord
+          for (var j = 0; j < n && straight; j++) {
+            if (cum[j] <= d0 || cum[j] >= d1) continue;
+            if (Math.abs((sx[j] - a[0]) * dy - (sy[j] - a[1]) * dx) / len > 4.5) straight = false;
+          }
+          if (!straight) continue;
+          var cx = (a[0] + b[0]) / 2, cy = (a[1] + b[1]) / 2;
+          if (cx < 0 || cx > W || cy < 0 || cy > H) continue;
+          var last = lastByName[s.name];
+          if (last && last.some(function (p) { return Math.hypot(p[0] - cx, p[1] - cy) < 260; })) return;
+          var ang = Math.atan2(dy, dx); if (ang > Math.PI / 2) ang -= Math.PI; if (ang < -Math.PI / 2) ang += Math.PI;
+          var hw = (Math.abs(Math.cos(ang)) * tw + Math.abs(Math.sin(ang)) * fs) / 2 + 3,
+              hh = (Math.abs(Math.sin(ang)) * tw + Math.abs(Math.cos(ang)) * fs) / 2 + 3;
+          var box = [cx - hw, cy - hh, cx + hw, cy + hh];
+          if (placed.some(function (p) { return box[0] < p[2] && box[2] > p[0] && box[1] < p[3] && box[3] > p[1]; })) continue;
+          placed.push(box); (lastByName[s.name] || (lastByName[s.name] = [])).push([cx, cy]);
+          ctx.save(); ctx.translate(cx, cy); ctx.rotate(ang);
+          ctx.lineWidth = 3; ctx.strokeStyle = halo; ctx.lineJoin = "round"; ctx.strokeText(s.name, 0, 0.5);
+          ctx.fillStyle = ink; ctx.fillText(s.name, 0, 0.5);
+          ctx.restore();
+          return;
+        }
+      });
     }
 
     function pip(x, y, arr) {
