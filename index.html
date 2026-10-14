@@ -140,7 +140,7 @@
     <p class="sec-num">03 &middot; Calculator</p>
     <h2 id="h-calc">What would change?</h2>
     <p>Pick how much of every building's value to exempt. Each tax class still raises exactly what it raised in FY2026, so the rate goes up as the building exemption grows. Owner-occupants keep the residential exemption, recalculated on the new values, which keeps each owner-occupant's savings close to today's $3,400. All 25,400 taxable properties get recomputed right in your browser.</p>
-    <p><strong>At a 50% building exemption, the median owner-occupied single-family home pays <span class="more num">12% more</span> (about $930 a year), and the median condo pays <span class="less num">13% less</span>.</strong> So in Cambridge, a land value tax would mostly shift tax from houses to condos, and it wouldn't cut the typical homeowner's bill.</p>
+    <p><strong>At a 50% building exemption, the median owner-occupied single-family home pays <span class="more num">12% more</span> (about $930 a year), and the median condo pays <span class="less num">14% less</span>.</strong> So in Cambridge, a land value tax would mostly shift tax from houses to condos, and it wouldn't cut the typical homeowner's bill.</p>
 
     <div class="calc">
       <form class="calc-controls" id="calc-form" onsubmit="return false">
@@ -184,6 +184,31 @@
       </div>
     </div>
     <p class="caption">A few notes on the groups. "Owner-occupied" means the property has the residential exemption in the City's open data, which misses about 900 owner-occupants. The two- and three-family and condo rows include both owner-occupied and rental properties, and parking lots and vacant land include both classes. Condo land is estimated. Values are held at FY2026 levels, and a real reform would phase in over several years.</p>
+    <details class="primer">
+      <summary>Condos, two- and three-families, and apartments: what's the difference?</summary>
+      <div class="primer-body">
+        <p>These groups are about who owns a building and how it's taxed, not what it looks like. The same triple-decker can be a three-family or three condos, depending on how it's owned.</p>
+        <ul>
+          <li><strong>Single-, two- and three-family homes.</strong> One owner, one parcel and one tax bill, with land and building valued separately. Often the owner lives in one unit and rents out the others.</li>
+          <li><strong>Apartment buildings (4 to 8 units, and 9 or more).</strong> Also one owner and one tax bill, usually a landlord renting every unit.</li>
+          <li><strong>Condos.</strong> Each unit is owned separately and gets its own tax bill. The owners share the land and common areas, each with a percentage interest set in the building's master deed under state condo law (Chapter 183A). The City's open data puts $0 of land value on the units and records the lot on a separate building record, so I estimated each building's land and split it among its units by value.</li>
+        </ul>
+        <p>The residential exemption works differently too. Every owner-occupied condo unit gets its own exemption (worth about $3,400 a year), while an owner-occupied three-family gets one for the whole building, and its rented units get none.</p>
+      </div>
+    </details>
+    <details class="primer">
+      <summary>Why is the same building worth more as condos?</summary>
+      <div class="primer-body">
+        <p>Selling homes one at a time to people who'll live in them usually brings in more than selling the whole building to someone who'll rent it out.</p>
+        <ul>
+          <li><strong>An investor pays for the rent.</strong> Someone buying a three-family or an apartment building to rent out works out what the rents will bring in after costs, and pays a price that earns a return on that, so rent levels cap the price.</li>
+          <li><strong>A homebuyer pays for a home.</strong> Owning comes with things a landlord doesn't get on rented units: mortgages designed for homebuyers, no tax on most of the gain when you sell your home, and Cambridge's residential exemption for every owner-occupied unit.</li>
+          <li><strong>More buyers, smaller pieces.</strong> Far more people can afford one $800,000 unit than a $2.4 million building, and more buyers push prices up.</li>
+          <li><strong>Conversions usually come with renovation.</strong> New kitchens, bathrooms and systems add real building value.</li>
+        </ul>
+        <p>On average the Assessor values small condo buildings at about 25% more per square foot of living space than comparable two- and three-families in the same area. What the data can't tell us is how much of that extra value belongs to the land and how much to the building. My estimate puts it in the building, which is a big part of why condos pay less in these scenarios. If all of it were land, condos would still pay less at a 50% building exemption, but about 9% less instead of 14%. That's one reason I'm asking Assessing to publish condo land values.</p>
+      </div>
+    </details>
   </div>
 </section>
 
