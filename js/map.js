@@ -47,8 +47,10 @@
     var W = 0, H = 0, dpr = 1, transform = d3.zoomIdentity;
     var paths = [], bbox = new Float32Array(nF * 4), rings = [], grid = null, GC = 24, gw = 0, gh = 0;
     var parkPaths = { taxable: null, exempt: null };
-    var VACANT = P.labels.indexOf("vacant/developable land"), nVacant = 0;
-    for (var v = 0; v < P.lab.length; v++) if (P.lab[v] === VACANT && P.status[v] === 1) nVacant++;
+    // developable or potentially developable vacant land (undevelopable land such as private park land is left out)
+    var VACDEV = new Uint8Array(P.geom.length);
+    (P.vacdev || []).forEach(function (f) { VACDEV[f] = 1; });
+    var nVacant = (P.vacdev || []).length;
 
     // lon/lat bounds for fitting (winding-independent)
     var minX = 180, minY = 90, maxX = -180, maxY = -90;
@@ -115,7 +117,7 @@
         if (st === 2) return N.none;
         var r = P.ratio[f]; return (r == null || st === 0) ? N.none : RATIO.colors[binIndex(RATIO.bins, r)];
       }
-      if (layer === "park") return st === 0 ? N.none : (st === 1 && P.lab[f] === VACANT ? N.vacant : N.parkBase);
+      if (layer === "park") return st === 0 ? N.none : (st === 1 && VACDEV[f] ? N.vacant : N.parkBase);
       if (layer === "tax") {
         if (st === 0) return N.none;
         if (st === 2 || !scen || !(scen.cur[f] > 0)) return N.exempt;
@@ -329,7 +331,7 @@
       if (layer === "park") html = '<span class="ttl">Surface parking (OpenStreetMap) and vacant land</span><div class="keys">' +
         '<span class="key"><i style="background:' + N.parkTax + '"></i>On taxable parcels (' + PK.acres.taxable + ' acres)</span>' +
         '<span class="key"><i style="background:' + N.parkEx + '"></i>On tax-exempt parcels (' + PK.acres.exempt + ' acres)</span>' +
-        '<span class="key"><i style="background:repeating-linear-gradient(135deg,' + N.vacant + ' 0 3px,' + N.parkBase + ' 3px 6px)"></i>Vacant land, taxable (' + nVacant + ' parcels)</span>' +
+        '<span class="key"><i style="background:repeating-linear-gradient(135deg,' + N.vacant + ' 0 3px,' + N.parkBase + ' 3px 6px)"></i>Developable vacant land, taxable (' + nVacant + ' parcels)</span>' +
         '<span class="key"><i style="background:' + N.parkBase + '"></i>Other parcels</span></div>';
       legendEl.innerHTML = html;
     }
