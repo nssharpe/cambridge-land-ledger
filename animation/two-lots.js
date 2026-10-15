@@ -56,24 +56,24 @@
         "id": 4, "short": "Inside each class", "title": "In Cambridge, the shift stays inside each class", "start": 42, "end": 60, "rest": 45.5, "restReduced": 59.9,
         "captions": [
           { "start": 42, "end": 47, "text": "Massachusetts taxes homes and businesses as separate classes, so any shift stays inside each class." },
-          { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 12% more, and a condo in a 6-unit building on a similar lot pays about 13% less." },
+          { "start": 47, "end": 54, "text": "That means a house on a big lot pays about 12% more, and a condo in a 6-unit building on a similar lot pays about 14% less." },
           { "start": 54, "end": 60, "text": "So in Cambridge this mostly moves tax off condos and onto houses." }
         ],
-        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.95 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -13% for condos."
+        "note": "Illustrative, before the residential exemption. The FY26 residential rate is $6.67 per $1,000, and at 2:1 it's $9.95 for land and $4.97 for buildings. Cambridge medians at 2:1 are +12% for owner-occupied single-family homes and -14% for condos."
       },
       {
         "id": 5, "short": "What to do first", "title": "What to do first", "start": 60, "end": 73, "rest": 64.6, "restReduced": 67.9,
         "captions": [
           { "start": 60, "end": 64.5, "text": "The first step is getting land values right, starting with parking, commercial and condo land." },
-          { "start": 64.5, "end": 68, "text": "After that, a state option for cities that want it." },
-          { "start": 68, "end": 73, "text": "Cambridge Land Ledger. Built by a Cambridge resident who lives in a condo." }
+          { "start": 64.5, "end": 68, "text": "After that, a state law that lets cities choose a land-weighted tax." },
+          { "start": 68, "end": 73, "text": "I'd like Cambridge to go first, with a gentler version that keeps homeowners about even." }
         ],
         "note": "Based on Cambridge FY26 assessor data and tax rates, run through the Cambridge Land Ledger model."
       }
     ],
     "steps": [
-      { "title": "Get land values right", "text": "Ask Assessing to review parking and commercial land against comparable land, and to give condo units their share of the land." },
-      { "title": "A state option", "text": "Let cities that want a land-weighted tax opt in. Cambridge residents can support that without Cambridge having to go first." }
+      { "title": "Get land values right", "text": "Ask Assessing four questions: how commercial and residential land compare, how parking lots and vacant land are valued, how parking around shops, offices and labs is valued, and whether condo units can get their share of the land." },
+      { "title": "A state option", "text": "Let cities that want a land-weighted tax opt in. Cambridge should go first once the courts weigh in and condo land values are published, with a gentler version that keeps homeowners about even." }
     ],
     "geom": {
       "building": { "x": 345, "y": 125, "w": 205, "h": 165, "dx": 24, "dy": 80, "floors": 5 },
@@ -319,6 +319,7 @@
 
     // end card
     var endCard = el('div', { 'class': 'tl-end' }, stage);
+    endCard.style.display = 'none';   // the end card is for the video export, not the site
     el('p', { 'class': 'tl-end-title' }, endCard, STORY.endCard.title);
     el('p', { 'class': 'tl-end-line' }, endCard, STORY.endCard.line);
 
@@ -365,7 +366,6 @@
 
       // caption: in reduced-motion mode show the whole scene's narration
       var cap = reduce ? sc.captions.map(function (c) { return c.text; }).join(' ') : captionAt(sc, t);
-      if (si === 4 && reduce) { cap = sc.captions.slice(0, 2).map(function (c) { return c.text; }).join(' '); }
       if (cap !== lastCaption) { caption.textContent = cap; lastCaption = cap; }
 
       g.com.style.display = isCom ? '' : 'none';
